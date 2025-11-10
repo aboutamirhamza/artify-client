@@ -3,7 +3,7 @@ import React from "react";
 const ArtWorkViewDetails = () => {
   return (
     <div>
-      <div className="container mx-auto py-30">
+      <div className="container mx-auto py-30 px-6">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             <img

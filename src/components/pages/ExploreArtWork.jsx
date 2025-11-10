@@ -27,7 +27,7 @@ const ExploreArtWork = () => {
         </div>
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-hidden">
         <div className="card bg-base-100 w-96 shadow-sm">
           <figure>
             <img
