@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default;
+}
+
+:root{
+    --raleway: "Raleway", sans-serif;
+    --space-mono: "Space Mono", monospace;
+}
+
+.font-raleway {
+    font-family: var(--raleway);
+}
+
+.font-space-mono {
+    font-family: var(--space-mono);
+}
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
