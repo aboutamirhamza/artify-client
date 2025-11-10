@@ -21,3 +21,8 @@
 * {
     font-family: 'Open Sans', sans-serif;
 }
+
+::selection{
+    color: #fff;
+    background:#0400ff;
+}

@@ -3,7 +3,11 @@ import { NavLink } from "react-router";
 const Navbar = () => {
   const links = (
     <>
-      <NavLink to="/">Home</NavLink>
+      <NavLink to="/" className='mr-4'>Home</NavLink>
+      <NavLink to="/" className='mr-4'>Explore Artworks</NavLink>
+      <NavLink to="/" className='mr-4'>Add Artwork</NavLink>
+      <NavLink to="/" className='mr-4'>My Gallery</NavLink>
+      <NavLink to="/" className='mr-4'>My Favorites</NavLink>
     </>
   );
 
@@ -31,7 +35,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow"
             >
               {links}
             </ul>
