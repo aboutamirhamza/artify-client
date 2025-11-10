@@ -1,0 +1,24 @@
+.menus_item{
+    display: flex;
+    gap: 1.5rem;
+}
+
+.menus_items{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+nav a{
+    transition: all linear 0.3s;
+}
+
+nav a:hover{
+    color: rgb(230, 111, 0);
+}
+
+
+nav a.active{
+    color: rgb(230, 111, 0);
+}
+

@@ -10,7 +10,7 @@ const HomeLayout = () => {
                 <Navbar></Navbar>
             </header>
             <main>
-                <section className='min-h-screen'>
+                <section>
                     <Outlet></Outlet>
                     {/* {state == 'loading' ? <Loading></Loading> : <Outlet></Outlet>} */}
                 </section>

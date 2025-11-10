@@ -1,13 +1,13 @@
 import { NavLink } from "react-router";
-
+import './Navbar.css'
 const Navbar = () => {
   const links = (
     <>
-      <NavLink to="/" className='mr-4'>Home</NavLink>
-      <NavLink to="/" className='mr-4'>Explore Artworks</NavLink>
-      <NavLink to="/" className='mr-4'>Add Artwork</NavLink>
-      <NavLink to="/" className='mr-4'>My Gallery</NavLink>
-      <NavLink to="/" className='mr-4'>My Favorites</NavLink>
+      <li><NavLink to="/" className='mr-4 font-raleway font-bold text-base'>Home</NavLink></li>
+      <li><NavLink to="/explore-art-work" className='mr-4 font-raleway font-bold text-base'>Explore Artworks</NavLink></li>
+      <li><NavLink to="/add-artwork" className='mr-4 font-raleway font-bold text-base'>Add Artwork</NavLink></li>
+      <li><NavLink to="/my-gallery" className='mr-4 font-raleway font-bold text-base'>My Gallery</NavLink></li>
+      <li><NavLink to="/my-favorites" className='mr-4 font-raleway font-bold text-base'>My Favorites</NavLink></li>
     </>
   );
 
@@ -35,7 +35,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow"
+              className="menus_items menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow"
             >
               {links}
             </ul>
@@ -50,7 +50,7 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{links}</ul>
+          <ul className="menus_item menu-horizontal px-1">{links}</ul>
         </div>
 
         <div className="navbar-end">

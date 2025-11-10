@@ -40,7 +40,7 @@ const Banner = () => {
         modules={[Navigation, Pagination, Autoplay, EffectCoverflow, Thumbs, Parallax, Controller]}
         spaceBetween={40}
         slidesPerView={1.5}
-        loop={true}
+        loop={false}
         centeredSlides={true}
         navigation={true}
         pagination={{ clickable: true }}
