@@ -1,7 +1,84 @@
-import React from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from "react";
+import { FaSearch, FaHeart, FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router";
+import { AuthContext } from "../../provider/AuthProvider";
+import Swal from "sweetalert2";
+import Loading from "../Loading/Loading";
 
 const ExploreArtWork = () => {
+
+
+  const [artworks, setArtworks] = useState([]);
+  const { user, loading, setLoading } = useContext(AuthContext);
+  const [likedMap, setLikedMap] = useState({});
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:8000/user-favorites/${user.email}`)
+        .then((res) => res.json())
+        .then((favs) => {
+          const map = {};
+          favs.forEach((f) => (map[f._id] = true));
+          setLikedMap(map);
+        });
+    }
+  }, [user]);
+
+  const toggleFavorite = async (artworkId) => {
+    if (!user) {
+      Swal.fire("Please login first!");
+      return;
+    }
+
+    const isLiked = likedMap[artworkId];
+    const url = isLiked
+      ? `http://localhost:8000/unfavorite/${artworkId}`
+      : `http://localhost:8000/favorite/${artworkId}`;
+
+    try {
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail: user.email }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setLikedMap((prev) => ({ ...prev, [artworkId]: !isLiked }));
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: isLiked ? "error" : "success",
+          title: isLiked ? "Removed from favorites" : "Added to favorites",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/all-artworks")
+      .then((res) => res.json())
+      .then((data) => {
+        setArtworks(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const [query, setQuery] = useState("");
+  const filtered = artworks.filter(
+    (d) =>
+      d.title?.toLowerCase().includes(query.toLowerCase()) ||
+      d.userName?.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <div>
       <div>
@@ -19,343 +96,73 @@ const ExploreArtWork = () => {
             <span className="label">
               <FaSearch />
             </span>
-            <input type="text" placeholder="Search by title or artist" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by title or artist"
+            />
           </label>
-          <button className="btn btn-primary">
-            <FaSearch />
-          </button>
         </div>
       </div>
 
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-hidden py-10">
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
+        {loading ? (
+          <p className="text-center text-gray-700 col-span-full font-raleway text-4xl">
+            <Loading></Loading>
+          </p>
+        ) : filtered.length === 0 ? (
+          <p className="text-center text-gray-700 col-span-full font-raleway text-4xl">
+            No artworks found.
+          </p>
+        ) : (
+          filtered.map((artwork) => (
+            <div key={artwork._id} className="card bg-base-100 w-96 shadow-sm">
+              <figure>
+                <img
+                  className="p-4 rounded-2xl object-cover w-full h-[250px]"
+                  src={
+                    artwork.imageURL || "https://via.placeholder.com/400x300"
+                  }
+                  alt={artwork.title}
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title text-2xl">{artwork.title}</h2>
+                <div className="flex justify-between items-center">
+                  <p className="font-raleway text-base">
+                    Artist Name:{" "}
+                    <span className="font-bold">{artwork.userName}</span>
+                  </p>
+                  <button
+                    onClick={() => toggleFavorite(artwork._id)}
+                    className="text-xl cursor-pointer"
+                  >
+                    {likedMap[artwork._id] ? (
+                      <FaHeart className="text-red-500 transition-all duration-300" />
+                    ) : (
+                      <FaRegHeart className="text-gray-400 transition-all duration-300" />
+                    )}
+                  </button>
+                </div>
+                <div className="card-actions justify-end">
+                  <div className="badge badge-soft badge-secondary">
+                    {artwork.category}
+                  </div>
+                </div>
+                <Link
+                  to={`/art-work-view-details/${artwork._id}`}
+                  className="btn btn-primary my-5"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
+                  View Details
+                </Link>
+              </div>
             </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
-
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure>
-            <img
-              className="p-4 rounded-2xl object-cover"
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-2xl">
-              Title
-              {/* <div className="badge badge-secondary">NEW</div> */}
-            </h2>
-            <div className="flex justify-between items-center">
-              <p className="font-raleway text-2xl font-bold">Artist Name</p>
-              <button className="text-xl text-red-500 cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2.5"
-                  stroke="currentColor"
-                  className="size-[1.2em]"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="card-actions justify-end">
-              <div className="badge badge-soft badge-secondary">Cat-01</div>
-              <div className="badge badge-soft badge-secondary">Cat-02</div>
-              <div className="badge badge-soft badge-secondary">Cat-03</div>
-            </div>
-            <button className="btn btn-primary my-5">View Details</button>
-          </div>
-        </div>
+          ))
+        )}
       </div>
+
+      
     </div>
   );
 };

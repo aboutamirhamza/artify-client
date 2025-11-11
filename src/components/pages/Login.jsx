@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
-import { AuthContext } from "../../provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router";
 import { Bounce, toast } from "react-toastify";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { AuthContext } from "../../provider/AuthProvider";
 const Login = () => {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -52,9 +52,11 @@ const Login = () => {
         const user = result.user;
 
         if (!user.photoURL) {
-          user.photoURL =
-            "https://img.freepik.com/premium-vector/orange-envelope-with-t-mail-logo-it_1277826-407.jpg?semt=ais_hybrid&w=740&q=80";
-        }
+        user.photoURL =
+          "https://img.freepik.com/premium-vector/orange-envelope-with-t-mail-logo-it_1277826-407.jpg?semt=ais_hybrid&w=740&q=80";
+      } else if (!user.photoURL.startsWith("https://")) {
+        user.photoURL = user.photoURL.replace("http://", "https://");
+      }
 
         setUser(user);
         navigate(`${location.state ? location.state : "/"}`);

@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading></Loading>,
       },
       {
-        path: 'art-work-view-details',
+        path: 'art-work-view-details/:id',
         element: <PrivateRoute><ArtWorkViewDetails></ArtWorkViewDetails></PrivateRoute>,
         hydrateFallbackElement: <Loading></Loading>,
 

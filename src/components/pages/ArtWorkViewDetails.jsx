@@ -1,6 +1,49 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const ArtWorkViewDetails = () => {
+  const { id } = useParams();
+  const [artwork, setArtwork] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [totalArtworks, setTotalArtworks] = useState(0);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/artworks-details/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setArtwork(data);
+        setLoading(false);
+
+        if (data?.userEmail) {
+          fetch("http://localhost:8000/all-artworks")
+            .then((res) => res.json())
+            .then((allData) => {
+              const count = allData.filter(
+                (art) => art.userEmail === data.userEmail
+              ).length;
+              setTotalArtworks(count);
+            });
+        }
+      })
+      .catch((err) => console.error(err));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
+  if (!artwork) {
+    return (
+      <div className="text-center text-gray-500 py-20">Artwork not found.</div>
+    );
+  }
+
   return (
     <div>
       <div className="container mx-auto py-30 px-6">
@@ -8,27 +51,34 @@ const ArtWorkViewDetails = () => {
           <div>
             <img
               className="w-full h-[900px] object-cover"
-              src="https://images.unsplash.com/photo-1503682579489-1a53aff795af?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170"
-              alt=""
+              src={artwork?.imageURL}
+              alt={artwork?.title}
             />
           </div>
           <div className="space-y-4 mt-10">
-            <h3 className="text-4xl font-bold font-raleway">Title</h3>
-            <h3 className="text-2xl font-medium font-raleway">Artist Name</h3>
-            <h3 className="text-xl font-raleway">Medium</h3>
-            <p className="text-base font-raleway">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos
-              magnam a fuga sed placeat, odio modi nihil recusandae temporibus
-              expedita.
-            </p>
-
+            <h3 className="text-4xl font-bold font-raleway">{artwork.title}</h3>
+            <h3 className="text-xl font-medium font-raleway">
+              Artist Name: <span className="font-bold">{artwork.userName}</span>
+            </h3>
+            <h3 className="text-base font-raleway">
+              Using Tools: <span className="font-bold">{artwork.medium}</span>
+            </h3>
+            <p className="text-base font-raleway">{artwork.description}</p>
             <div className="space-y-4 mt-10">
-              <h3 className="text-4xl font-bold font-raleway">Artist Information</h3>
-              <h3 className="text-2xl font-medium font-raleway">Artist Name</h3>
-              <img className="w-40 h-40 rounded-full object-cover" src="https://media.istockphoto.com/id/489243814/photo/beautiful-female-artist-in-her-studio.jpg?s=612x612&w=0&k=20&c=0bZmeXrlE04lbl-q4L44f6SPsZFyeAYRHLYXjKi17YQ=" alt="" />
+              <h3 className="text-2xl font-medium font-raleway">
+                Artist Name:{" "}
+                <span className="font-bold">{artwork.userName}</span>
+              </h3>
+              <img
+                className="w-40 h-40 rounded-full object-cover"
+                src={user?.photoURL}
+                alt={user?.displayName}
+              />
               <p className="text-base font-raleway">
-                Total ArtWorks
+                Total ArtWorks:{" "}
+                <span className="font-bold">{totalArtworks}</span>
               </p>
+              <Link to="/explore-art-work" className="btn btn-primary my-20">Back To Explore Art Work</Link>
             </div>
           </div>
         </div>

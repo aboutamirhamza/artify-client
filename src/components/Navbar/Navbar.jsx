@@ -132,17 +132,26 @@ const Navbar = () => {
           <div className="grid grid-cols-2 gap-4">
             {user ? (
               <div className="flex items-center gap-4">
-                <img
-                  data-tooltip-id="my-tooltip-1"
-                  className="w-12 h-12 rounded-full object-cover"
-                  src={user.photoURL}
-                  alt={user.displayName}
-                />
+                {user?.photoURL ? (
+                  <img
+                    data-tooltip-id="my-tooltip-1"
+                    className="w-12 h-12 rounded-full object-cover"
+                    src={
+                      user.photoURL ||
+                      "https://img.freepik.com/premium-vector/orange-envelope-with-t-mail-logo-it_1277826-407.jpg?semt=ais_hybrid&w=740&q=80"
+                    }
+                    alt={user.displayName}
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+                    {user?.displayName?.[0] || "?"}
+                  </div>
+                )}
                 <ReactTooltip
                   id="my-tooltip-1"
                   place="left"
                   variant="warning"
-                  content={`I am ${user.displayName}`}
+                  content={`Hi I'm ${user.displayName}`}
                 />
                 <button onClick={handleLogout} className="btn btn-primary">
                   Logout

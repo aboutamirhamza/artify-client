@@ -1,94 +1,57 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
-
-// MyFavorites.jsx
-// A clean and elegant favorite artworks list using React + TailwindCSS + DaisyUI
+import { AuthContext } from "../../provider/AuthProvider";
 
 const MyFavorites = () => {
-  const [favorites, setFavorites] = useState([
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&auto=format&fit=crop",
-      title: "Dreamy Skies",
-      artist: "Lena Ray",
-      liked: true,
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
-      title: "Soft Glow",
-      artist: "Rafi Ahmed",
-      liked: true,
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop",
-      title: "Golden Light",
-      artist: "Maya Sen",
-      liked: true,
-    },
-  ]);
+  const { user } = useContext(AuthContext);
+  const [favorites, setFavorites] = useState([]);
 
-  const toggleLike = (id) => {
-    setFavorites((prev) =>
-      prev.map((fav) =>
-        fav.id === id ? { ...fav, liked: !fav.liked } : fav
-      )
-    );
+  const fetchFavorites = () => {
+    if (user?.email) {
+      fetch(`http://localhost:8000/user-favorites/${user.email}`)
+        .then(res => res.json())
+        .then(data => setFavorites(data))
+        .catch(err => console.error(err));
+    }
+  };
+
+  useEffect(() => {
+    fetchFavorites();
+  }, [user]);
+
+  const removeFavorite = async (id) => {
+    await fetch(`http://localhost:8000/unfavorite/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userEmail: user.email }),
+    });
+    fetchFavorites();
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-60">
-      <h2 className="text-3xl font-bold text-center mb-8 text-primary">
-        My Gallery
-      </h2>
-
-      <div className="flex flex-col gap-4">
+    <div className="max-w-5xl mx-auto py-20">
+      <h2 className="text-3xl font-bold text-center mb-8 text-primary">My Favorites</h2>
+      <div className="grid gap-6">
         {favorites.map((item) => (
-          <div
-            key={item.id}
-            className="card bg-base-100 shadow-md hover:shadow-lg transition-all duration-300"
-          >
-            <div className="card-body flex-row items-center justify-between p-4">
-              <div className="flex items-center gap-4">
-                <div className="avatar">
-                  <div className="w-16 h-16 rounded-xl overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">{item.title}</h3>
-                  <p className="text-sm opacity-70">by {item.artist}</p>
-                </div>
+          <div key={item._id} className="card bg-base-100 shadow-md flex items-center justify-between p-4">
+            <div className="flex items-center gap-4">
+              <img src={item.imageURL} alt={item.title} className="w-20 h-20 rounded-xl object-cover" />
+              <div>
+                <h3 className="font-semibold text-lg">{item.title}</h3>
+                <p className="text-sm opacity-70">{item.userName}</p>
               </div>
-
-              <button
-                onClick={() => toggleLike(item.id)}
-                className={`transition-colors duration-300 p-2 rounded-full hover:scale-110 ${
-                  item.liked ? "text-red-500" : "text-gray-400"
-                }`}
-              >
-                <FaHeart className="w-6 h-6" />
-              </button>
             </div>
+            <button onClick={() => removeFavorite(item._id)} className="text-red-500 hover:scale-110 transition-transform">
+              <FaHeart className="w-6 h-6" />
+            </button>
           </div>
         ))}
       </div>
-
       {favorites.length === 0 && (
-        <div className="text-center opacity-60 mt-8">
-          No favorite artworks yet.
-        </div>
+        <p className="text-center opacity-70 mt-10">You have no favorite artworks yet.</p>
       )}
     </div>
   );
-}
+};
 
 export default MyFavorites;
