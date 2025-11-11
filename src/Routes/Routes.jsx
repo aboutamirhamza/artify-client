@@ -8,6 +8,9 @@ import HomeLayout from "../layout/HomeLayout";
 import AddArtWork from "../components/pages/AddArtWork";
 import MyGallery from "../components/pages/MyGallery";
 import MyFavorites from "../components/pages/MyFavorites";
+import AuthLayout from "../layout/AuthLayout";
+import Login from "../components/pages/Login";
+import Register from "../components/pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,22 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/auth',
+    Component: AuthLayout,
+    children:[
+      {
+        path: '/auth/login',
+        element: <Suspense fallback={<Loading></Loading>}><Login></Login></Suspense>,
+        hydrateFallbackElement: <Loading></Loading>,
+      },
+      {
+        path: '/auth/register',
+        element: <Suspense fallback={<Loading></Loading>}><Register></Register></Suspense>,
+        hydrateFallbackElement: <Loading></Loading>,
+      },
+    ]
+  }
 ]);
 
 export default router;

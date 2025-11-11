@@ -55,8 +55,8 @@ const Navbar = () => {
 
         <div className="navbar-end">
           <div className="grid grid-cols-2 gap-4">
-            <a className="btn btn-primary">Login</a>
-            <a className="btn btn-accent">Register</a>
+            <Link to="/auth/login" className="btn btn-primary">Login</Link>
+            <Link to="/auth/register" className="btn btn-accent">Register</Link>
           </div>
         </div>
       </div>
