@@ -159,9 +159,6 @@ const FeaturedArtWork = () => {
             <button className="btn btn-primary my-5">View Details</button>
           </div>
         </div>
-
-
-
       </div>
     </div>
   );
