@@ -1,13 +1,85 @@
-import { Link, NavLink } from "react-router";
-import './Navbar.css'
+import { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
+import { Bounce, toast } from "react-toastify";
+import { AuthContext } from "../../provider/AuthProvider";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import "./Navbar.css";
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      toast("Logout successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      navigate("/");
+    } catch (error) {
+      toast(`Logout Error! ${error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   const links = (
     <>
-      <li><NavLink to="/" className='mr-4 font-raleway font-bold text-base'>Home</NavLink></li>
-      <li><NavLink to="/explore-art-work" className='mr-4 font-raleway font-bold text-base'>Explore Artworks</NavLink></li>
-      <li><NavLink to="/add-artwork" className='mr-4 font-raleway font-bold text-base'>Add Artwork</NavLink></li>
-      <li><NavLink to="/my-gallery" className='mr-4 font-raleway font-bold text-base'>My Gallery</NavLink></li>
-      <li><NavLink to="/my-favorites" className='mr-4 font-raleway font-bold text-base'>My Favorites</NavLink></li>
+      <li>
+        <NavLink to="/" className="mr-4 font-raleway font-bold text-base">
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/explore-art-work"
+          className="mr-4 font-raleway font-bold text-base"
+        >
+          Explore Artworks
+        </NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink
+              to="/add-artwork"
+              className="mr-4 font-raleway font-bold text-base"
+            >
+              Add Artwork
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/my-gallery"
+              className="mr-4 font-raleway font-bold text-base"
+            >
+              My Gallery
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/my-favorites"
+              className="mr-4 font-raleway font-bold text-base"
+            >
+              My Favorites
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
 
@@ -41,7 +113,10 @@ const Navbar = () => {
             </ul>
           </div>
           <div>
-            <Link to="/" className="text-4xl font-bold font-space-mono text-purple-700">
+            <Link
+              to="/"
+              className="text-4xl font-bold font-space-mono text-purple-700"
+            >
               A<span className="text-orange-600">R</span>T
               <span className="text-orange-600">I</span>
               FY
@@ -55,8 +130,34 @@ const Navbar = () => {
 
         <div className="navbar-end">
           <div className="grid grid-cols-2 gap-4">
-            <Link to="/auth/login" className="btn btn-primary">Login</Link>
-            <Link to="/auth/register" className="btn btn-accent">Register</Link>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <img
+                  data-tooltip-id="my-tooltip-1"
+                  className="w-12 h-12 rounded-full object-cover"
+                  src={user.photoURL}
+                  alt={user.displayName}
+                />
+                <ReactTooltip
+                  id="my-tooltip-1"
+                  place="left"
+                  variant="warning"
+                  content={`I am ${user.displayName}`}
+                />
+                <button onClick={handleLogout} className="btn btn-primary">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link to="/auth/login" className="btn btn-primary">
+                  Login
+                </Link>
+                <Link to="/auth/register" className="btn btn-accent">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ import AuthLayout from "../layout/AuthLayout";
 import Login from "../components/pages/Login";
 import Register from "../components/pages/Register";
 import Error404 from "../components/pages/Error404";
+import PrivateRoute from "../provider/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -30,23 +31,19 @@ const router = createBrowserRouter([
       },
       {
         path: 'art-work-view-details',
-        element: <Suspense fallback={<Loading></Loading>}><ArtWorkViewDetails></ArtWorkViewDetails></Suspense>,
-        hydrateFallbackElement: <Loading></Loading>,
+        element: <PrivateRoute><ArtWorkViewDetails></ArtWorkViewDetails></PrivateRoute>
       },
       {
         path: 'add-artwork',
-        element: <Suspense fallback={<Loading></Loading>}><AddArtWork></AddArtWork></Suspense>,
-        hydrateFallbackElement: <Loading></Loading>,
+        element: <PrivateRoute><AddArtWork></AddArtWork></PrivateRoute>
       },
       {
         path: 'my-gallery',
-        element: <Suspense fallback={<Loading></Loading>}><MyGallery></MyGallery></Suspense>,
-        hydrateFallbackElement: <Loading></Loading>,
+        element: <PrivateRoute><MyGallery></MyGallery></PrivateRoute>
       },
       {
         path: 'my-favorites',
-        element: <Suspense fallback={<Loading></Loading>}><MyFavorites></MyFavorites></Suspense>,
-        hydrateFallbackElement: <Loading></Loading>,
+        element: <PrivateRoute><MyFavorites></MyFavorites></PrivateRoute>
       },
     ],
   },
