@@ -41,12 +41,12 @@ const MyFavorites = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-40">
+    <div className="max-w-5xl mx-auto py-60">
       <h2 className="text-3xl font-bold text-center mb-8 text-primary">
         My Gallery
       </h2>
 
-      <div className="flex flex-col gap-4 px-6">
+      <div className="flex flex-col gap-4">
         {favorites.map((item) => (
           <div
             key={item.id}

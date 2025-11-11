@@ -11,6 +11,7 @@ import MyFavorites from "../components/pages/MyFavorites";
 import AuthLayout from "../layout/AuthLayout";
 import Login from "../components/pages/Login";
 import Register from "../components/pages/Register";
+import Error404 from "../components/pages/Error404";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,12 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading></Loading>,
       },
     ]
-  }
+  },
+  {
+      path: '/*',
+      Component: Error404,
+  },
+  
 ]);
 
 export default router;
