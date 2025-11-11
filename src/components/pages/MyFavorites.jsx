@@ -46,7 +46,7 @@ const MyFavorites = () => {
         My Gallery
       </h2>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 px-6">
         {favorites.map((item) => (
           <div
             key={item.id}
