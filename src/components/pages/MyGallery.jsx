@@ -32,27 +32,6 @@ const MyGallery = () => {
   ]);
 
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState(null);
-  const [isViewOpen, setIsViewOpen] = useState(false);
-
-  function handleView(item) {
-    setSelected(item);
-    setIsViewOpen(true);
-  }
-
-  function handleEdit(item) {
-
-    alert(`Edit: ${item.title} (id: ${item.id})`);
-  }
-
-  function handleDelete(item) {
-    if (!confirm(`Are you sure you want to delete "${item.title}"?`)) return;
-    setData((prev) => prev.filter((d) => d.id !== item.id));
-    if (selected?.id === item.id) {
-      setSelected(null);
-      setIsViewOpen(false);
-    }
-  }
 
   const filtered = data.filter(
     (d) =>
@@ -115,8 +94,6 @@ const MyGallery = () => {
                         <div className="flex gap-2 justify-end">
                           <button
                             className="btn btn-ghost btn-sm tooltip tooltip-top"
-                            data-tip="View"
-                            onClick={() => handleView(item)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -142,8 +119,6 @@ const MyGallery = () => {
 
                           <button
                             className="btn btn-ghost btn-sm tooltip tooltip-top"
-                            data-tip="Edit"
-                            onClick={() => handleEdit(item)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -169,8 +144,6 @@ const MyGallery = () => {
 
                           <button
                             className="btn btn-ghost btn-sm text-error tooltip tooltip-top"
-                            data-tip="Delete"
-                            onClick={() => handleDelete(item)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -202,31 +175,6 @@ const MyGallery = () => {
           </div>
         </div>
       </div>
-
-
-      {isViewOpen && selected && (
-        <div className="modal modal-open">
-          <div className="modal-box max-w-4xl">
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <img src={selected.image} alt={selected.title} className="rounded-lg w-full" />
-              </div>
-              <div className="w-1/2">
-                <h3 className="font-bold text-xl">{selected.title}</h3>
-                <p className="opacity-70">by {selected.artist}</p>
-                <p className="mt-3">Dimensions: {selected.dimensions}</p>
-                <p className="mt-1">Price: {selected.price}</p>
-
-                <div className="mt-6 flex gap-2">
-                  <button className="btn" onClick={() => handleEdit(selected)}>Edit</button>
-                  <button className="btn btn-error" onClick={() => handleDelete(selected)}>Delete</button>
-                  <button className="btn btn-ghost" onClick={() => { setIsViewOpen(false); setSelected(null); }}>Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,28 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    photoURL: "",
-    password: "",
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert("Register submitted! Replace this with your auth logic.");
   };
 
-  const handleGoogleSignup = () => {
-    alert("Google Signup clicked! Replace with Firebase or OAuth logic.");
-  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 py-10">
@@ -35,7 +21,7 @@ const Register = () => {
             Join us and showcase your creativity
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Full Name</span>
@@ -43,8 +29,6 @@ const Register = () => {
               <input
                 type="text"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
                 placeholder="Enter your full name"
                 className="input input-bordered w-full"
                 required
@@ -58,8 +42,6 @@ const Register = () => {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
                 placeholder="Enter your email"
                 className="input input-bordered w-full"
                 required
@@ -73,8 +55,6 @@ const Register = () => {
               <input
                 type="text"
                 name="photoURL"
-                value={formData.photoURL}
-                onChange={handleChange}
                 placeholder="https://example.com/profile.jpg"
                 className="input input-bordered w-full"
               />
@@ -87,8 +67,6 @@ const Register = () => {
               <input
                 type="password"
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
                 required
@@ -103,7 +81,6 @@ const Register = () => {
 
             <button
               type="button"
-              onClick={handleGoogleSignup}
               className="btn btn-outline flex items-center justify-center gap-2 w-full hover:bg-base-200"
             >
               <FcGoogle className="text-2xl" />
