@@ -5,6 +5,7 @@ import ArtWorkViewDetails from "../components/pages/ArtWorkViewDetails";
 import ExploreArtWork from "../components/pages/ExploreArtWork";
 import Home from "../components/pages/Home";
 import HomeLayout from "../layout/HomeLayout";
+import AddArtWork from "../components/pages/AddArtWork";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,12 @@ const router = createBrowserRouter([
         path: 'art-work-view-details',
         element: <Suspense fallback={<Loading></Loading>}><ArtWorkViewDetails></ArtWorkViewDetails></Suspense>,
         hydrateFallbackElement: <Loading></Loading>,
-      }
+      },
+      {
+        path: 'add-artwork',
+        element: <Suspense fallback={<Loading></Loading>}><AddArtWork></AddArtWork></Suspense>,
+        hydrateFallbackElement: <Loading></Loading>,
+      },
     ],
   },
 ]);
