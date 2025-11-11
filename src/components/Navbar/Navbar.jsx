@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import './Navbar.css'
 const Navbar = () => {
   const links = (
@@ -41,11 +41,11 @@ const Navbar = () => {
             </ul>
           </div>
           <div>
-            <h3 className="text-4xl font-bold font-space-mono text-purple-700">
+            <Link to="/" className="text-4xl font-bold font-space-mono text-purple-700">
               A<span className="text-orange-600">R</span>T
               <span className="text-orange-600">I</span>
               FY
-            </h3>
+            </Link>
           </div>
         </div>
 

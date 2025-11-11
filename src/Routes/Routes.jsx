@@ -6,6 +6,8 @@ import ExploreArtWork from "../components/pages/ExploreArtWork";
 import Home from "../components/pages/Home";
 import HomeLayout from "../layout/HomeLayout";
 import AddArtWork from "../components/pages/AddArtWork";
+import MyGallery from "../components/pages/MyGallery";
+import MyFavorites from "../components/pages/MyFavorites";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,16 @@ const router = createBrowserRouter([
       {
         path: 'add-artwork',
         element: <Suspense fallback={<Loading></Loading>}><AddArtWork></AddArtWork></Suspense>,
+        hydrateFallbackElement: <Loading></Loading>,
+      },
+      {
+        path: 'my-gallery',
+        element: <Suspense fallback={<Loading></Loading>}><MyGallery></MyGallery></Suspense>,
+        hydrateFallbackElement: <Loading></Loading>,
+      },
+      {
+        path: 'my-favorites',
+        element: <Suspense fallback={<Loading></Loading>}><MyFavorites></MyFavorites></Suspense>,
         hydrateFallbackElement: <Loading></Loading>,
       },
     ],
