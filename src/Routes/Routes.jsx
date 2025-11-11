@@ -31,19 +31,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'art-work-view-details',
-        element: <PrivateRoute><ArtWorkViewDetails></ArtWorkViewDetails></PrivateRoute>
+        element: <PrivateRoute><ArtWorkViewDetails></ArtWorkViewDetails></PrivateRoute>,
+        hydrateFallbackElement: <Loading></Loading>,
+
       },
       {
         path: 'add-artwork',
-        element: <PrivateRoute><AddArtWork></AddArtWork></PrivateRoute>
+        element: <PrivateRoute><AddArtWork></AddArtWork></PrivateRoute>,
+        hydrateFallbackElement: <Loading></Loading>,
+
       },
       {
         path: 'my-gallery',
-        element: <PrivateRoute><MyGallery></MyGallery></PrivateRoute>
+        element: <PrivateRoute><MyGallery></MyGallery></PrivateRoute>,
+        hydrateFallbackElement: <Loading></Loading>,
       },
       {
         path: 'my-favorites',
-        element: <PrivateRoute><MyFavorites></MyFavorites></PrivateRoute>
+        element: <PrivateRoute><MyFavorites></MyFavorites></PrivateRoute>,
+        hydrateFallbackElement: <Loading></Loading>,
       },
     ],
   },
