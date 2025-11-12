@@ -9,9 +9,9 @@ const MyFavorites = () => {
   const fetchFavorites = () => {
     if (user?.email) {
       fetch(`http://localhost:8000/user-favorites/${user.email}`)
-        .then(res => res.json())
-        .then(data => setFavorites(data))
-        .catch(err => console.error(err));
+        .then((res) => res.json())
+        .then((data) => setFavorites(data))
+        .catch((err) => console.error(err));
     }
   };
 
@@ -30,25 +30,39 @@ const MyFavorites = () => {
 
   return (
     <div className="max-w-5xl mx-auto py-20">
-      <h2 className="text-3xl font-bold text-center mb-8 text-primary">My Favorites</h2>
-      <div className="grid gap-6">
+      <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+        My Favorites
+      </h2>
+      <div className="grid gap-6 px-6">
         {favorites.map((item) => (
-          <div key={item._id} className="card bg-base-100 shadow-md flex items-center justify-between p-4">
+          <div
+            key={item._id}
+            className="card bg-base-100 shadow-md grid grid-cols-2 justify-between p-4"
+          >
             <div className="flex items-center gap-4">
-              <img src={item.imageURL} alt={item.title} className="w-20 h-20 rounded-xl object-cover" />
+              <img
+                src={item.imageURL}
+                alt={item.title}
+                className="w-20 h-20 rounded-xl object-cover"
+              />
               <div>
                 <h3 className="font-semibold text-lg">{item.title}</h3>
                 <p className="text-sm opacity-70">{item.userName}</p>
               </div>
             </div>
-            <button onClick={() => removeFavorite(item._id)} className="text-red-500 hover:scale-110 transition-transform">
+            <button
+              onClick={() => removeFavorite(item._id)}
+              className="text-red-500 absolute top-10 right-10 sm:top-15 md:top-10 hover:scale-110 transition-transform"
+            >
               <FaHeart className="w-6 h-6" />
             </button>
           </div>
         ))}
       </div>
       {favorites.length === 0 && (
-        <p className="text-center opacity-70 mt-10">You have no favorite artworks yet.</p>
+        <p className="text-center opacity-70 mt-10">
+          You have no favorite artworks yet.
+        </p>
       )}
     </div>
   );
