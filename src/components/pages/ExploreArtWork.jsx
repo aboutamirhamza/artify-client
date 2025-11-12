@@ -4,8 +4,16 @@ import { Link, useOutletContext } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import Loading from "../Loading/Loading";
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 const ExploreArtWork = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
 
   const { dark } = useOutletContext();
 
@@ -83,15 +91,25 @@ const ExploreArtWork = () => {
   return (
     <div>
       <div>
-        <h2 className={`${dark ? "text-white" : "text-gray-900"} text-5xl font-extrabold  mb-10 font-raleway text-center mt-30`}>
-          <span className={`${dark ? "text-white" : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"} font-raleway`}>
+        <h2
+          className={`${
+            dark ? "text-white" : "text-gray-900"
+          } text-5xl font-extrabold  mb-10 font-raleway text-center mt-30`}
+        >
+          <span
+            className={`${
+              dark
+                ? "text-white"
+                : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"
+            } font-raleway`}
+          >
             Explore Art{" "}
           </span>
           Work
         </h2>
       </div>
 
-      <div className="container mx-auto my-10">
+      <div className="container mx-auto my-10" data-aos="fade-up">
         <div className="text-right">
           <label className={`${dark ? "bg-gray-800" : "bg-gray-200"} input`}>
             <span className="label">
@@ -107,7 +125,7 @@ const ExploreArtWork = () => {
         </div>
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-hidden py-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-hidden py-10" data-aos="fade-down">
         {loading ? (
           <p className="text-center text-gray-700 col-span-full font-raleway text-4xl">
             <Loading></Loading>
@@ -118,7 +136,12 @@ const ExploreArtWork = () => {
           </p>
         ) : (
           filtered.map((artwork) => (
-            <div key={artwork._id} className={`${dark ? "bg-gray-800" : "bg-gray-100"} card bg-base-100 shadow-sm`}>
+            <div
+              key={artwork._id}
+              className={`${
+                dark ? "bg-gray-800" : "bg-gray-100"
+              } card bg-base-100 shadow-sm`}
+            >
               <figure>
                 <img
                   className="p-4 rounded-2xl object-cover w-full h-[250px]"
@@ -129,11 +152,15 @@ const ExploreArtWork = () => {
                 />
               </figure>
               <div className="card-body">
-                <h2 className="card-title text-2xl wrap-break-word font-raleway font-bold">{artwork.title}</h2>
+                <h2 className="card-title text-2xl wrap-break-word font-raleway font-bold">
+                  {artwork.title}
+                </h2>
                 <div className="flex justify-between items-center">
                   <p className="font-raleway text-base">
                     Artist Name:{" "}
-                    <span className="font-bold wrap-break-word">{artwork.userName}</span>
+                    <span className="font-bold wrap-break-word">
+                      {artwork.userName}
+                    </span>
                   </p>
                   <button
                     onClick={() => toggleFavorite(artwork._id)}
@@ -162,8 +189,6 @@ const ExploreArtWork = () => {
           ))
         )}
       </div>
-
-      
     </div>
   );
 };

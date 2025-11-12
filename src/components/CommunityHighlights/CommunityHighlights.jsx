@@ -1,14 +1,26 @@
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import { FaHeart, FaCommentDots, FaShareAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const hightlightPromise = fetch('/community.json').then(res => res.json());
 
 const CommunityHighlights = ({ dark }) => {
+
+  useEffect(() => {
+    Aos.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
+
+
+
     const highlights = use(hightlightPromise);
   return (
-    <section className={`${dark ? "bg-gray-800" : "bg-linear-to-br from-gray-50 to-white"} relative  py-10 px-6 overflow-hidden`}>
+    <section className={`${dark ? "bg-gray-800" : "bg-linear-to-br from-gray-50 to-white"} relative  py-10 px-6 overflow-hidden`} data-aos="fade-up">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1),transparent_70%)] pointer-events-none"></div>
       <div className="max-w-7xl mx-auto relative z-10">
         <h2 className={`${dark ? "text-white" : "text-black"} text-5xl font-extrabold mb-10 font-raleway text-center`}>

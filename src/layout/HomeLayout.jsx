@@ -30,6 +30,8 @@ const HomeLayout = () => {
     }
   };
 
+  
+
   const { state } = useNavigation();
 
   return (

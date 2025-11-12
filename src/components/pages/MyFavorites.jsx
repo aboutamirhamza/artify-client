@@ -2,9 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { AuthContext } from "../../provider/AuthProvider";
 import { useOutletContext } from "react-router";
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 const MyFavorites = () => {
-
+  useEffect(() => {
+    Aos.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
   const { dark } = useOutletContext();
 
   const { user } = useContext(AuthContext);
@@ -33,15 +40,21 @@ const MyFavorites = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-20">
-      <h2 className={`${dark ? "text-white" : "text-primary"} text-3xl font-bold text-center mb-8 `}>
+    <div className="max-w-5xl mx-auto py-20" data-aos="fade-up">
+      <h2
+        className={`${
+          dark ? "text-white" : "text-primary"
+        } text-3xl font-bold text-center mb-8 `}
+      >
         My Favorites
       </h2>
       <div className="grid gap-6 px-6">
         {favorites.map((item) => (
           <div
             key={item._id}
-            className={`${dark ? "bg-gray-700" : "bg-white"} card bg-base-100 shadow-md grid grid-cols-2 justify-between p-4`}
+            className={`${
+              dark ? "bg-gray-700" : "bg-white"
+            } card bg-base-100 shadow-md grid grid-cols-2 justify-between p-4`}
           >
             <div className="flex items-center gap-4">
               <img

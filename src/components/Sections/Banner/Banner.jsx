@@ -16,12 +16,21 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
-
-
-
-
+import Aos from "aos";
+import 'aos/dist/aos.css';
 
 const Banner = () => {
+
+
+
+  useEffect(() => {
+    Aos.init({
+        duration: 1000, 
+        once: true,
+        easing: 'ease-in-out',
+    });
+    }, []);
+
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [slides, setSlides] = useState([]);
   const mainRef = useRef(null);
@@ -34,7 +43,7 @@ const Banner = () => {
   }, []);
   
   return (
-    <div className="overflow-hidden relative">
+    <div className="overflow-hidden relative" data-aos="flip-down">
       <Swiper
         ref={mainRef}
         modules={[Navigation, Pagination, Autoplay, EffectCoverflow, Thumbs, Parallax, Controller]}

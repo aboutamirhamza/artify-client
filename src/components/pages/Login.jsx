@@ -1,10 +1,21 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
 import { useLocation, useNavigate, useOutletContext } from "react-router";
 import { Bounce, toast } from "react-toastify";
 import { AuthContext } from "../../provider/AuthProvider";
+import Aos from "aos";
+import 'aos/dist/aos.css';
 const Login = () => {
+
+  useEffect(() => {
+      Aos.init({
+          duration: 1000, 
+          once: true,
+          easing: 'ease-in-out',
+      });
+      }, []);
+
   const { dark } = useOutletContext();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -90,7 +101,7 @@ const Login = () => {
 
   return (
     <div className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} min-h-screen flex items-center justify-center bg-base-200 py-10`}>
-      <div className={`${dark ? "bg-gray-800" : "bg-white"} card w-full max-w-md shadow-2xl bg-base-100`}>
+      <div data-aos="flip-up" className={`${dark ? "bg-gray-800" : "bg-white"} card w-full max-w-md shadow-2xl bg-base-100`}>
         <div className="card-body">
           <h2 className={`${dark ? "text-white" : "text-primary"} text-3xl font-bold text-center mb-8 `}>
             Login Account

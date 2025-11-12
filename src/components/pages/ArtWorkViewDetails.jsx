@@ -1,8 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
-import { Typewriter } from 'react-simple-typewriter'
+import { Typewriter } from "react-simple-typewriter";
+import Aos from "aos";
+import "aos/dist/aos.css";
 const ArtWorkViewDetails = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
+
   const { id } = useParams();
   const [artwork, setArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +56,7 @@ const ArtWorkViewDetails = () => {
 
   return (
     <div>
-      <div className="container mx-auto py-30 px-6">
+      <div className="container mx-auto py-30 px-6" data-aos="fade-up">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             <img
@@ -56,18 +66,37 @@ const ArtWorkViewDetails = () => {
             />
           </div>
           <div className="space-y-4 mt-10">
-            <h3 className="text-4xl font-bold font-raleway wrap-break-word">{artwork?.title}</h3>
+            <h3 className="text-4xl font-bold font-raleway wrap-break-word">
+              {artwork?.title}
+            </h3>
             <h3 className="text-xl font-medium font-raleway wrap-break-word">
-              Artist Name: <span className="font-bold"><Typewriter words={[artwork?.userName]} loop={0} cursor cursorStyle='|' typeSpeed={70} delaySpeed={1000} /></span>
+              Artist Name:{" "}
+              <span className="font-bold">
+                <Typewriter
+                  words={[artwork?.userName]}
+                  loop={0}
+                  cursor
+                  cursorStyle="|"
+                  typeSpeed={70}
+                  delaySpeed={1000}
+                />
+              </span>
             </h3>
             <h3 className="text-base font-raleway wrap-break-word">
-              Using Tools: <span className="font-bold wrap-break-word">{artwork.medium}</span>
+              Using Tools:{" "}
+              <span className="font-bold wrap-break-word">
+                {artwork.medium}
+              </span>
             </h3>
-            <p className="text-base font-raleway wrap-break-word">{artwork.description}</p>
+            <p className="text-base font-raleway wrap-break-word">
+              {artwork.description}
+            </p>
             <div className="space-y-4 mt-10">
               <h3 className="text-2xl font-medium font-raleway">
                 Artist Name:{" "}
-                <span className="font-bold wrap-break-word">{artwork.userName}</span>
+                <span className="font-bold wrap-break-word">
+                  {artwork.userName}
+                </span>
               </h3>
               <img
                 className="w-40 h-40 rounded-full object-cover"
@@ -76,9 +105,13 @@ const ArtWorkViewDetails = () => {
               />
               <p className="text-base font-raleway">
                 Total ArtWorks:{" "}
-                <span className="font-bold wrap-break-word">{totalArtworks}</span>
+                <span className="font-bold wrap-break-word">
+                  {totalArtworks}
+                </span>
               </p>
-              <Link to="/explore-art-work" className="btn btn-primary my-20">Back To Explore Art Work</Link>
+              <Link to="/explore-art-work" className="btn btn-primary my-20">
+                Back To Explore Art Work
+              </Link>
             </div>
           </div>
         </div>
