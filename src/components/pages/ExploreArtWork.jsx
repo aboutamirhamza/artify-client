@@ -128,11 +128,11 @@ const ExploreArtWork = () => {
                 />
               </figure>
               <div className="card-body">
-                <h2 className="card-title text-2xl">{artwork.title}</h2>
+                <h2 className="card-title text-2xl wrap-break-word font-raleway font-bold">{artwork.title}</h2>
                 <div className="flex justify-between items-center">
                   <p className="font-raleway text-base">
                     Artist Name:{" "}
-                    <span className="font-bold">{artwork.userName}</span>
+                    <span className="font-bold wrap-break-word">{artwork.userName}</span>
                   </p>
                   <button
                     onClick={() => toggleFavorite(artwork._id)}
@@ -146,7 +146,7 @@ const ExploreArtWork = () => {
                   </button>
                 </div>
                 <div className="card-actions justify-end">
-                  <div className="badge badge-soft badge-secondary">
+                  <div className="badge badge-soft badge-secondary wrap-break-word">
                     {artwork.category}
                   </div>
                 </div>

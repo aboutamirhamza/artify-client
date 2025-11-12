@@ -56,18 +56,18 @@ const ArtWorkViewDetails = () => {
             />
           </div>
           <div className="space-y-4 mt-10">
-            <h3 className="text-4xl font-bold font-raleway">{artwork.title}</h3>
-            <h3 className="text-xl font-medium font-raleway">
+            <h3 className="text-4xl font-bold font-raleway wrap-break-word">{artwork.title}</h3>
+            <h3 className="text-xl font-medium font-raleway wrap-break-word">
               Artist Name: <span className="font-bold">{artwork.userName}</span>
             </h3>
-            <h3 className="text-base font-raleway">
-              Using Tools: <span className="font-bold">{artwork.medium}</span>
+            <h3 className="text-base font-raleway wrap-break-word">
+              Using Tools: <span className="font-bold wrap-break-word">{artwork.medium}</span>
             </h3>
-            <p className="text-base font-raleway">{artwork.description}</p>
+            <p className="text-base font-raleway wrap-break-word">{artwork.description}</p>
             <div className="space-y-4 mt-10">
               <h3 className="text-2xl font-medium font-raleway">
                 Artist Name:{" "}
-                <span className="font-bold">{artwork.userName}</span>
+                <span className="font-bold wrap-break-word">{artwork.userName}</span>
               </h3>
               <img
                 className="w-40 h-40 rounded-full object-cover"
@@ -76,7 +76,7 @@ const ArtWorkViewDetails = () => {
               />
               <p className="text-base font-raleway">
                 Total ArtWorks:{" "}
-                <span className="font-bold">{totalArtworks}</span>
+                <span className="font-bold wrap-break-word">{totalArtworks}</span>
               </p>
               <Link to="/explore-art-work" className="btn btn-primary my-20">Back To Explore Art Work</Link>
             </div>
