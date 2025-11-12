@@ -166,7 +166,7 @@ const Navbar = ({dark, toggleDark}) => {
                 />
               </div>
             ) : (
-              <>
+              <div className="flex items-center gap-4">
                 <Link to="/auth/login" className="btn btn-primary">
                   Login
                 </Link>
@@ -179,7 +179,7 @@ const Navbar = ({dark, toggleDark}) => {
                   checked={dark}
                   onChange={toggleDark}
                 />
-              </>
+              </div>
             )}
           </div>
         </div>

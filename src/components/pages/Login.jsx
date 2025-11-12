@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useOutletContext } from "react-router";
 import { Bounce, toast } from "react-toastify";
 import { AuthContext } from "../../provider/AuthProvider";
 const Login = () => {
+  const { dark } = useOutletContext();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const { signIn, setUser, googleSignIn } = useContext(AuthContext);
@@ -88,10 +89,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 py-10">
-      <div className="card w-full max-w-md shadow-2xl bg-base-100">
+    <div className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} min-h-screen flex items-center justify-center bg-base-200 py-10`}>
+      <div className={`${dark ? "bg-gray-800" : "bg-white"} card w-full max-w-md shadow-2xl bg-base-100`}>
         <div className="card-body">
-          <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          <h2 className={`${dark ? "text-white" : "text-primary"} text-3xl font-bold text-center mb-8 `}>
             Login Account
           </h2>
           <p className="text-center text-sm opacity-70 mb-6">
@@ -101,25 +102,26 @@ const Login = () => {
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <div className="form-control">
               <label className="label">
-                <span onChange={(e) => setEmail(e.target.value)} className="label-text font-medium">Email Address</span>
+                <span className={`${dark ? "text-white" : "text-black"} label-text font-medium`}>Email Address</span>
               </label>
               <input
                 type="email"
                 name="email"
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
             </div>
 
             <div className="form-control relative">
               <label className="label">
-                <span className="label-text font-medium">Password</span>
+                <span className={`${dark ? "text-white" : "text-black"} label-text font-medium`}>Password</span>
               </label>
               <input
                 type={passwordShowHide ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
               <button
                 type="button"
@@ -144,7 +146,7 @@ const Login = () => {
             <button
               onClick={handleGoogleSignIn}
               type="button"
-              className="btn btn-outline flex items-center justify-center gap-2 w-full hover:bg-base-200"
+              className={`${dark ? " hover:bg-gray-200" : ""} btn btn-outline flex items-center justify-center gap-2 w-full hover:bg-base-200`}
             >
               <FcGoogle className="text-2xl" />
               Sign In with Google
@@ -153,7 +155,7 @@ const Login = () => {
 
           <p className="text-center text-sm opacity-70 mt-6">
             Don't have an account?{" "}
-            <a href="/auth/register" className="link link-primary">
+            <a href="/auth/register" className={`${dark ? "text-white" : "link-primary"} link`}>
               Register
             </a>
           </p>

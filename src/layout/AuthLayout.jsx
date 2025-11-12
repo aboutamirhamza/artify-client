@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../components/Footer/Footer';
 
 const AuthLayout = () => {
+
+    const [dark, setDark] = useState(false);
+    
+      useEffect(() => {
+        const storedTheme = localStorage.getItem("theme");
+        if (storedTheme === "dark") {
+          setDark(true);
+          document.documentElement.classList.add("dark");
+        } else {
+          setDark(false);
+          document.documentElement.classList.remove("dark");
+        }
+      }, []);
+    
+      const toggleDark = () => {
+        const newTheme = !dark;
+        setDark(newTheme);
+        localStorage.setItem("theme", newTheme ? "dark" : "light");
+    
+        if (newTheme) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      };
+
     return (
-        <div>
+        <div className={dark ? "dark bg-gray-900 text-white" : "bg-white text-black"}>
             <header>
-                <Navbar></Navbar>
+                <Navbar dark={dark} toggleDark={toggleDark}></Navbar>
             </header>
 
             <main>
-                <Outlet></Outlet>
+                <Outlet context={{ dark }}></Outlet>
             </main>
 
             <footer>

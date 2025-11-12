@@ -2,14 +2,14 @@ import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Bounce, toast } from "react-toastify";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useOutletContext } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 
 const Register = () => {
 
-
+const { dark } = useOutletContext();
 
   const { createUser, setUser, updateUser, googleSignIn } = useContext(AuthContext);
   const [nameError, setNameError] = useState("");
@@ -164,10 +164,10 @@ const Register = () => {
     };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 py-10">
-      <div className="card w-full max-w-md shadow-2xl bg-base-100">
+    <div className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} min-h-screen flex items-center justify-center bg-base-200 py-10`}>
+      <div className={`${dark ? "bg-gray-800" : "bg-white"} card w-full max-w-md shadow-2xl bg-base-100`}>
         <div className="card-body">
-          <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          <h2 className={`${dark ? "text-white" : "text-primary"} text-3xl font-bold text-center mb-8 `}>
             Create Account
           </h2>
           <p className="text-center text-sm opacity-70 mb-6">
@@ -177,26 +177,26 @@ const Register = () => {
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-medium">Full Name</span>
+                <span className={`${dark ? "text-white" : "text-black"} label-text font-medium`}>Full Name</span>
               </label>
               <input
                 type="text"
                 name="name"
                 placeholder="Enter your full name"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
             </div>
             {nameError && <p className="text-red-600">{nameError}</p>}
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-medium">Email Address</span>
+                <span className={`${dark ? "text-white" : "text-black"} label-text font-medium`}>Email Address</span>
               </label>
               <input
                 type="email"
                 name="email"
                 placeholder="Enter your email"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
             </div>
             {emailError && <p className="text-red-600">{emailError}</p>}
@@ -204,7 +204,7 @@ const Register = () => {
             <div className="form-control">
               <label className="label">
                 <span
-                  className="label-text font-medium"
+                  className={`${dark ? "text-white" : "text-black"} label-text font-medium`}
                   placeholder="PhotoURL"
                   name="photo"
                 >
@@ -215,20 +215,20 @@ const Register = () => {
                 type="text"
                 name="photoURL"
                 placeholder="https://example.com/profile.jpg"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
             </div>
             {photoError && <p className="text-red-600">{photoError}</p>}
 
             <div className="form-control relative">
               <label className="label">
-                <span className="label-text font-medium">Password</span>
+                <span className={`${dark ? "text-white" : "text-black"} label-text font-medium`}>Password</span>
               </label>
               <input
                 type={passwordShowHide ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               />
               <button
                 type="button"
@@ -253,7 +253,7 @@ const Register = () => {
             <button
               onClick={handleGoogleSignIn}
               type="button"
-              className="btn btn-outline flex items-center justify-center gap-2 w-full hover:bg-base-200"
+              className={`${dark ? " hover:bg-gray-200" : ""} btn btn-outline flex items-center justify-center gap-2 w-full hover:bg-base-200`}
             >
               <FcGoogle className="text-2xl" />
               Sign up with Google
@@ -262,7 +262,7 @@ const Register = () => {
 
           <p className="text-center text-sm opacity-70 mt-6">
             Already have an account?{" "}
-            <Link to="/auth/login" className="link link-primary">
+            <Link to="/auth/login" className={`${dark ? "text-white" : "link-primary"} link`}>
               Login
             </Link>
           </p>
