@@ -1,21 +1,25 @@
+import { useOutletContext } from 'react-router';
 import CommunityHighlights from '../CommunityHighlights/CommunityHighlights';
 import FeaturedArtWork from '../FeaturedArtWork/FeaturedArtWork';
 import Banner from '../Sections/Banner/Banner';
 import TopArtists from '../TopArtistsSection/TopArtists';
 const Home = () => {
+
+    const { dark } = useOutletContext();
+
     return (
         <div>
             <section className='mt-30'>
-                <Banner></Banner>
+                <Banner dark={dark}></Banner>
             </section>
             <section className='mt-30'>
-                <FeaturedArtWork></FeaturedArtWork>
+                <FeaturedArtWork dark={dark}></FeaturedArtWork>
             </section>
             <section className='mt-10'>
-                <TopArtists></TopArtists>
+                <TopArtists dark={dark}></TopArtists>
             </section>
             <section>
-                <CommunityHighlights></CommunityHighlights>
+                <CommunityHighlights dark={dark}></CommunityHighlights>
             </section>
         </div>
     );

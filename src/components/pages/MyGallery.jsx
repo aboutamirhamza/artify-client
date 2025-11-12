@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
+import { useOutletContext } from "react-router";
 
 const MyGallery = () => {
+  const { dark } = useOutletContext();
   const { user } = useContext(AuthContext);
   const [artworks, setArtworks] = useState([]);
   const [query, setQuery] = useState("");
@@ -74,7 +76,7 @@ const MyGallery = () => {
   return (
     <div className="container mx-auto py-40 px-10">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-3xl font-bold font-raleway text-center mb-8 text-primary">
+        <h2 className={`${dark ? "text-white" : "text-primary"} text-3xl font-bold font-raleway text-center mb-8`}>
           My Gallery
         </h2>
         <input
@@ -142,16 +144,16 @@ const MyGallery = () => {
       </div>
 
       <dialog id="edit_modal" className="modal">
-        <div className="modal-box max-w-2xl">
+        <div className={`${dark ? "bg-gray-800 text-white" : "text-black"} modal-box max-w-2xl`}>
           <h3 className="font-bold text-3xl font-raleway mb-4">Edit Artwork</h3>
           {selected && (
             <form onSubmit={handleSaveEdit} className="space-y-3">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <span className="text-gray-600 font-raleway">Name</span>
+                  <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>Name</span>
                   <input
                     type="text"
-                    className="input input-bordered w-full"
+                    className={`${dark ? "bg-gray-700" : "text-black"} input input-bordered w-full`}
                     value={selected.title}
                     onChange={(e) =>
                       setSelected({ ...selected, title: e.target.value })
@@ -161,10 +163,10 @@ const MyGallery = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-gray-600 font-raleway">Category</span>
+                  <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>Category</span>
                   <input
                     type="text"
-                    className="input input-bordered w-full"
+                    className={`${dark ? "bg-gray-700" : "text-black"} input input-bordered w-full`}
                     value={selected.category}
                     onChange={(e) =>
                       setSelected({ ...selected, category: e.target.value })
@@ -173,12 +175,12 @@ const MyGallery = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-gray-600 font-raleway">
+                  <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>
                     Medium/Using Tools
                   </span>
                   <input
                     type="text"
-                    className="input input-bordered w-full"
+                    className={`${dark ? "bg-gray-700" : "text-black"} input input-bordered w-full`}
                     value={selected.medium}
                     onChange={(e) =>
                       setSelected({ ...selected, medium: e.target.value })
@@ -187,10 +189,10 @@ const MyGallery = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-gray-600 font-raleway">Price</span>
+                  <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>Price</span>
                   <input
                     type="text"
-                    className="input input-bordered w-full"
+                    className={`${dark ? "bg-gray-700" : "text-black"} input input-bordered w-full`}
                     value={selected.price}
                     onChange={(e) =>
                       setSelected({ ...selected, price: e.target.value })
@@ -199,10 +201,10 @@ const MyGallery = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-gray-600 font-raleway">Dimensions</span>
+                  <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>Dimensions</span>
                   <input
                     type="text"
-                    className="input input-bordered w-full"
+                    className={`${dark ? "bg-gray-700" : "text-black"} input input-bordered w-full`}
                     value={selected.dimensions}
                     onChange={(e) =>
                       setSelected({ ...selected, dimensions: e.target.value })
@@ -212,11 +214,11 @@ const MyGallery = () => {
                 </div>
               </div>
               <div>
-                <span className="text-gray-600 font-raleway">Description</span>
+                <span className={`${dark ? "text-white" : "text-black"} text-gray-600 font-raleway`}>Description</span>
                 <textarea
                   cols={30}
                   rows={10}
-                  className="textarea textarea-bordered w-full"
+                  className={`${dark ? "bg-gray-700" : "text-black"} textarea textarea-bordered w-full`}
                   value={selected.description}
                   onChange={(e) =>
                     setSelected({ ...selected, description: e.target.value })

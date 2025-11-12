@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaSearch, FaHeart, FaRegHeart } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import Loading from "../Loading/Loading";
 
 const ExploreArtWork = () => {
 
+  const { dark } = useOutletContext();
 
   const [artworks, setArtworks] = useState([]);
   const { user, loading, setLoading } = useContext(AuthContext);
@@ -82,8 +83,8 @@ const ExploreArtWork = () => {
   return (
     <div>
       <div>
-        <h2 className="text-5xl font-extrabold text-gray-900 mb-10 font-raleway text-center mt-30">
-          <span className="font-raleway bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent">
+        <h2 className={`${dark ? "text-white" : "text-gray-900"} text-5xl font-extrabold  mb-10 font-raleway text-center mt-30`}>
+          <span className={`${dark ? "text-white" : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"} font-raleway`}>
             Explore Art{" "}
           </span>
           Work
@@ -92,7 +93,7 @@ const ExploreArtWork = () => {
 
       <div className="container mx-auto my-10">
         <div className="text-right">
-          <label className="input">
+          <label className={`${dark ? "bg-gray-800" : "bg-gray-200"} input`}>
             <span className="label">
               <FaSearch />
             </span>
@@ -117,7 +118,7 @@ const ExploreArtWork = () => {
           </p>
         ) : (
           filtered.map((artwork) => (
-            <div key={artwork._id} className="card bg-base-100 w-96 shadow-sm">
+            <div key={artwork._id} className={`${dark ? "bg-gray-800" : "bg-gray-100"} card bg-base-100 shadow-sm`}>
               <figure>
                 <img
                   className="p-4 rounded-2xl object-cover w-full h-[250px]"

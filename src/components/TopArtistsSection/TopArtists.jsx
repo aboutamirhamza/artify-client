@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const TopArtists = () => {
+const TopArtists = ({ dark }) => {
 
     const [artists, setArtists] = useState([]);
 
@@ -12,10 +12,10 @@ const TopArtists = () => {
     },[])
 
   return (
-    <section className="py-12 px-6 bg-white">
+    <section className={`${dark ? "bg-gray-800" : "bg-white"} py-12 px-6`}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-extrabold text-gray-900 mb-10 font-raleway text-center">
-           <span className="bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent font-raleway">Top Artists</span> of the <span className="font-raleway bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent">Week</span>
+        <h2 className={`text-5xl font-extrabold ${dark ? "text-white" : "text-gray-900"} mb-10 font-raleway text-center`}>
+           <span className={`${dark ? "text-white" : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"} font-raleway`}>Top Artists</span> of the <span className={`${dark ? "text-white" : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"} font-raleway"}`}>Week</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">

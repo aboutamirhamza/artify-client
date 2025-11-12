@@ -3,8 +3,10 @@ import { useContext, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
+import { useOutletContext } from "react-router";
 
 const AddArtWork = () => {
+  const { dark } = useOutletContext();
   const { user } = useContext(AuthContext);
   const [titleError, setTitleError] = useState("");
   const [categoryError, setCategoryError] = useState("");
@@ -102,8 +104,8 @@ const AddArtWork = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-40 p-8 bg-base-200 rounded-2xl shadow-lg">
-      <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+    <div className={`${dark ? "bg-gray-800" : "bg-white"} max-w-5xl mx-auto my-40 p-8 rounded-2xl shadow-lg`}>
+      <h2 className={`${dark ? "text-white" : "text-black"} text-3xl font-bold text-center mb-8 text-primary`}>
         Create New Artwork
       </h2>
 
@@ -118,7 +120,7 @@ const AddArtWork = () => {
               type="text"
               name="title"
               placeholder="Enter artwork title"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
             />
           </div>
           {titleError && <p className="text-red-500">{titleError}</p>}
@@ -129,7 +131,7 @@ const AddArtWork = () => {
               type="text"
               name="category"
               placeholder="e.g. Landscape, Portrait"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
             />
           </div>
           {categoryError && <p className="text-red-500">{categoryError}</p>}
@@ -140,7 +142,7 @@ const AddArtWork = () => {
               type="text"
               name="medium"
               placeholder="e.g. Oil, Watercolor, Digital"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
             />
           </div>
           {mediumError && <p className="text-red-500">{mediumError}</p>}
@@ -150,7 +152,7 @@ const AddArtWork = () => {
             <textarea
               name="description"
               placeholder="Describe your artwork..."
-              className="textarea textarea-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} textarea textarea-bordered w-full`}
               rows="4"
             ></textarea>
           </div>
@@ -164,7 +166,7 @@ const AddArtWork = () => {
               type="text"
               name="dimensions"
               placeholder="e.g. 24x36 inches"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
             />
           </div>
 
@@ -174,14 +176,14 @@ const AddArtWork = () => {
               type="number"
               name="price"
               placeholder="Enter price"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
               min="0"
             />
           </div>
 
           <div className="form-control">
             <label className="label font-semibold">Visibility</label>
-            <select name="visibility" className="select select-bordered w-full">
+            <select name="visibility" className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} select select-bordered w-full`}>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
@@ -196,7 +198,7 @@ const AddArtWork = () => {
                 name="name"
                 defaultValue={user?.displayName}
                 placeholder="Your name"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
                 readOnly
               />
             </div>
@@ -207,7 +209,7 @@ const AddArtWork = () => {
                 name="email"
                 defaultValue={user?.email}
                 placeholder="Your email"
-                className="input input-bordered w-full"
+                className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
                 readOnly
               />
             </div>
@@ -219,7 +221,7 @@ const AddArtWork = () => {
               type="text"
               name="imageURL"
               placeholder="https://example.com/artwork.jpg"
-              className="input input-bordered w-full"
+              className={`${dark ? "bg-gray-900 text-white" : "bg-white text-black"} input input-bordered w-full`}
             />
           </div>
         </div>

@@ -4,7 +4,9 @@ import { Bounce, toast } from "react-toastify";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./Navbar.css";
-const Navbar = () => {
+
+const Navbar = ({dark, toggleDark}) => {
+  
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -84,8 +86,8 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-base-100 shadow-2xl">
-      <div className="navbar container mx-auto">
+    <nav className={`${dark ? "bg-neutral" : "bg-base-100"} fixed top-0 left-0 w-full z-50 bg-base-100 shadow-2xl`}>
+      <div className="navbar container mx-auto ">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -156,6 +158,12 @@ const Navbar = () => {
                 <button onClick={handleLogout} className="btn btn-primary">
                   Logout
                 </button>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-primary"
+                  checked={dark}
+                  onChange={toggleDark}
+                />
               </div>
             ) : (
               <>
@@ -165,6 +173,12 @@ const Navbar = () => {
                 <Link to="/auth/register" className="btn btn-accent">
                   Register
                 </Link>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-primary"
+                  checked={dark}
+                  onChange={toggleDark}
+                />
               </>
             )}
           </div>
