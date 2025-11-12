@@ -1,182 +1,245 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const MyGallery = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop",
-      title: "Colorful Horizon",
-      artist: "Lena Ray",
-      price: "$120",
-      dimensions: "1024x768",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1504198266280-5b6b2a0d6de6?w=800&auto=format&fit=crop",
-      title: "City Lights",
-      artist: "Amit Das",
-      price: "$220",
-      dimensions: "1920x1080",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=800&auto=format&fit=crop",
-      title: "Silent Forest",
-      artist: "Maya Sen",
-      price: "$80",
-      dimensions: "800x1200",
-    },
-  ]);
-
+  const { user } = useContext(AuthContext);
+  const [artworks, setArtworks] = useState([]);
   const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState(null);
 
-  const filtered = data.filter(
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:8000/my-artworks/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setArtworks(data))
+        .catch((err) => console.error(err));
+    }
+  }, [user]);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e74c3c",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:8000/artworks/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then(() => {
+            Swal.fire("Deleted!", "Your artwork has been deleted.", "success");
+            setArtworks(artworks.filter((a) => a._id !== id));
+          });
+      }
+    });
+  };
+
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
+
+    const updatedData = { ...selected };
+    delete updatedData._id;
+
+    const res = await fetch(`http://localhost:8000/artworks/${selected._id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedData),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      Swal.fire("Updated!", "Your artwork has been updated.", "success");
+      setArtworks((prev) =>
+        prev.map((a) => (a._id === selected._id ? selected : a))
+      );
+      document.getElementById("edit_modal").close();
+    } else {
+      Swal.fire("Error!", "No changes were made.", "error");
+      document.getElementById("edit_modal").close();
+    }
+  };
+
+  const filtered = artworks.filter(
     (d) =>
-      d.title.toLowerCase().includes(query.toLowerCase()) ||
-      d.artist.toLowerCase().includes(query.toLowerCase())
+      d.title?.toLowerCase().includes(query.toLowerCase()) ||
+      d.userName?.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
     <div className="container mx-auto py-40 px-10">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
-        My Gallery
-      </h2>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Search by title or artist"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="input input-bordered input-sm w-64"
-          />
-        </div>
+        <h2 className="text-3xl font-bold font-raleway text-center mb-8 text-primary">
+          My Gallery
+        </h2>
+        <input
+          type="text"
+          placeholder="Search by title or artist"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="input input-bordered input-sm w-64"
+        />
       </div>
 
+      <div className="overflow-x-auto shadow rounded-xl">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Price</th>
+              <th>Dimensions</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((item) => (
+              <tr key={item._id} className="hover">
+                <td>
+                  <div className="avatar">
+                    <div className="w-16 rounded">
+                      <img src={item.imageURL} alt={item.title} />
+                    </div>
+                  </div>
+                </td>
+                <td>{item.title}</td>
+                <td>{item.userName}</td>
+                <td>{item.price}</td>
+                <td>{item.dimensions}</td>
+                <td>
+                  <div className="flex gap-2">
+                    <button
+                      className="btn btn-sm btn-outline btn-primary"
+                      onClick={() => {
+                        setSelected(item);
+                        document.getElementById("edit_modal").showModal();
+                      }}
+                    >
+                      Edit
+                    </button>
 
-      <div className="grid grid-cols-1 gap-6">
-   
-        <div className="lg:col-span-2">
-          <div className="card bg-base-100 shadow-md">
-            <div className="overflow-x-auto">
-              <table className="table table-compact w-full">
+                    <button
+                      className="btn btn-sm btn-outline btn-error"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-                <thead>
-                  <tr>
-                    <th className="w-24">Image</th>
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th className="hidden md:table-cell">Dimensions</th>
-                    <th className="hidden sm:table-cell">Price</th>
-                    <th className="w-48">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((item) => (
-                    <tr key={item.id} className="hover">
-                      <td>
-                        <div className="avatar">
-                          <div className="w-16 rounded">
-                            <img src={item.image} alt={item.title} />
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="font-medium">{item.title}</div>
-                      </td>
-                      <td>{item.artist}</td>
-                      <td className="hidden md:table-cell">{item.dimensions}</td>
-                      <td className="hidden sm:table-cell">{item.price}</td>
-                      <td>
-                        <div className="flex gap-2 justify-end">
-                          <button
-                            className="btn btn-ghost btn-sm tooltip tooltip-top"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                              />
-                            </svg>
-                          </button>
-
-                          <button
-                            className="btn btn-ghost btn-sm tooltip tooltip-top"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
-                              />
-                            </svg>
-                          </button>
-
-                          <button
-                            className="btn btn-ghost btn-sm text-error tooltip tooltip-top"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="card-body p-3">
-              <div className="text-sm text-muted">
-                Showing <strong>{filtered.length}</strong> of <strong>{data.length}</strong> items
+      <dialog id="edit_modal" className="modal">
+        <div className="modal-box max-w-2xl">
+          <h3 className="font-bold text-3xl font-raleway mb-4">Edit Artwork</h3>
+          {selected && (
+            <form onSubmit={handleSaveEdit} className="space-y-3">
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <span className="text-gray-600 font-raleway">Name</span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={selected.title}
+                    onChange={(e) =>
+                      setSelected({ ...selected, title: e.target.value })
+                    }
+                    placeholder="Title"
+                    required
+                  />
+                </div>
+                <div>
+                  <span className="text-gray-600 font-raleway">Category</span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={selected.category}
+                    onChange={(e) =>
+                      setSelected({ ...selected, category: e.target.value })
+                    }
+                    placeholder="Category"
+                  />
+                </div>
+                <div>
+                  <span className="text-gray-600 font-raleway">
+                    Medium/Using Tools
+                  </span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={selected.medium}
+                    onChange={(e) =>
+                      setSelected({ ...selected, medium: e.target.value })
+                    }
+                    placeholder="Medium"
+                  />
+                </div>
+                <div>
+                  <span className="text-gray-600 font-raleway">Price</span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={selected.price}
+                    onChange={(e) =>
+                      setSelected({ ...selected, price: e.target.value })
+                    }
+                    placeholder="Price"
+                  />
+                </div>
+                <div>
+                  <span className="text-gray-600 font-raleway">Dimensions</span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={selected.dimensions}
+                    onChange={(e) =>
+                      setSelected({ ...selected, dimensions: e.target.value })
+                    }
+                    placeholder="Dimensions"
+                  />
+                </div>
               </div>
-            </div>
-          </div>
+              <div>
+                <span className="text-gray-600 font-raleway">Description</span>
+                <textarea
+                  cols={30}
+                  rows={10}
+                  className="textarea textarea-bordered w-full"
+                  value={selected.description}
+                  onChange={(e) =>
+                    setSelected({ ...selected, description: e.target.value })
+                  }
+                  placeholder="Description"
+                ></textarea>
+              </div>
+
+              <div className="modal-action">
+                <button type="submit" className="btn btn-primary">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => document.getElementById("edit_modal").close()}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
         </div>
-      </div>
+      </dialog>
     </div>
   );
-}
+};
 
 export default MyGallery;
