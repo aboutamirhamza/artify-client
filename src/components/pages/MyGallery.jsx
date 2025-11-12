@@ -90,6 +90,7 @@ const MyGallery = () => {
         <table className="table w-full">
           <thead>
             <tr>
+              <th>SL</th>
               <th>Image</th>
               <th>Title</th>
               <th>Artist</th>
@@ -99,8 +100,10 @@ const MyGallery = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((item) => (
+            {filtered.map((item,index) => (
+              
               <tr key={item._id} className="hover">
+                <td>{index + 1}</td>
                 <td>
                   <div className="avatar">
                     <div className="w-16 rounded">
