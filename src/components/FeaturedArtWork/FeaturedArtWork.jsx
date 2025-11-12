@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link } from "react-router";
 import Loading from "../Loading/Loading";
-
+import { Fade, Slide } from "react-awesome-reveal";
 const FeaturedArtWork = ({dark}) => {
   const [artworks, setArtworks] = useState([]);
   const { loading, setLoading } = useContext(AuthContext);
@@ -23,6 +23,7 @@ const FeaturedArtWork = ({dark}) => {
   return (
     <div>
       <div>
+        <Slide triggerOnce>
         <h2 className={`${dark ? "text-white" : "text-black"} text-5xl font-extrabold text-gray-900 mb-10 font-raleway text-center`}>
           Featured{" "}
           <span className={`${dark ? "text-white" : "bg-linear-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent"}`}>
@@ -30,6 +31,7 @@ const FeaturedArtWork = ({dark}) => {
           </span>
           Work
         </h2>
+        </Slide>
       </div>
 
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-hidden py-10">

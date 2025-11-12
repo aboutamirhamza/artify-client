@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
-
+import { Typewriter } from 'react-simple-typewriter'
 const ArtWorkViewDetails = () => {
   const { id } = useParams();
   const [artwork, setArtwork] = useState(null);
@@ -56,9 +56,9 @@ const ArtWorkViewDetails = () => {
             />
           </div>
           <div className="space-y-4 mt-10">
-            <h3 className="text-4xl font-bold font-raleway wrap-break-word">{artwork.title}</h3>
+            <h3 className="text-4xl font-bold font-raleway wrap-break-word">{artwork?.title}</h3>
             <h3 className="text-xl font-medium font-raleway wrap-break-word">
-              Artist Name: <span className="font-bold">{artwork.userName}</span>
+              Artist Name: <span className="font-bold"><Typewriter words={[artwork?.userName]} loop={0} cursor cursorStyle='|' typeSpeed={70} delaySpeed={1000} /></span>
             </h3>
             <h3 className="text-base font-raleway wrap-break-word">
               Using Tools: <span className="font-bold wrap-break-word">{artwork.medium}</span>
