@@ -109,7 +109,7 @@ const Navbar = ({dark, toggleDark}) => {
             </div>
             <ul
               tabIndex="-1"
-              className="menus_items menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow"
+              className={`${dark ? "bg-neutral" : "bg-white"} menus_items menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-4 shadow`}
             >
               {links}
             </ul>

@@ -84,7 +84,7 @@ const MyGallery = () => {
           placeholder="Search by title or artist"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input input-bordered input-sm w-64"
+          className={`${dark ? "bg-gray-800" : "bg-gray-200"} input`}
         />
       </div>
 
