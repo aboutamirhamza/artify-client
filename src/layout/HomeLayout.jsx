@@ -3,7 +3,8 @@ import Footer from "../components/Footer/Footer";
 import Navbar from "../components/Navbar/Navbar";
 import Loading from "../components/Loading/Loading";
 import { useEffect, useState } from "react";
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 const HomeLayout = () => {
   const [dark, setDark] = useState(false);
 
@@ -18,6 +19,21 @@ const HomeLayout = () => {
     }
   }, []);
 
+  useEffect(() => {
+    Aos.init({
+      duration: 800,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      Aos.refresh();
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [dark]);
+
   const toggleDark = () => {
     const newTheme = !dark;
     setDark(newTheme);
@@ -28,6 +44,7 @@ const HomeLayout = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    Aos.refresh();
   };
 
   

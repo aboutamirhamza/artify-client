@@ -1,22 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Bounce, toast } from "react-toastify";
 import { Link, useNavigate, useOutletContext } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import 'aos/dist/aos.css';
-import Aos from "aos";
+
 
 const Register = () => {
 
 
-  useEffect(() => {
-    Aos.init({
-        duration: 1000, 
-        once: true,
-        easing: 'ease-in-out',
-    });
-    }, []);
 
   const { dark } = useOutletContext();
 

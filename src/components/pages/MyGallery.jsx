@@ -5,13 +5,7 @@ import { useOutletContext } from "react-router";
 import Aos from "aos";
 import "aos/dist/aos.css";
 const MyGallery = () => {
-  useEffect(() => {
-    Aos.init({
-      duration: 1000,
-      once: true,
-      easing: "ease-in-out",
-    });
-  }, []);
+
 
   const { dark } = useOutletContext();
   const { user } = useContext(AuthContext);
@@ -82,6 +76,14 @@ const MyGallery = () => {
       d.userName?.toLowerCase().includes(query.toLowerCase())
   );
 
+    useEffect(() => {
+    Aos.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
+
   return (
     <div className="container mx-auto py-40 px-10" data-aos="fade-up">
       <div className="flex items-center justify-between mb-4">
@@ -93,7 +95,6 @@ const MyGallery = () => {
           My Gallery
         </h2>
         <input
-          data-aos="fade-down"
           type="text"
           placeholder="Search by title or artist"
           value={query}

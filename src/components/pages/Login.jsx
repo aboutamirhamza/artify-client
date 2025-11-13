@@ -1,20 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
 import { useLocation, useNavigate, useOutletContext } from "react-router";
 import { Bounce, toast } from "react-toastify";
 import { AuthContext } from "../../provider/AuthProvider";
-import Aos from "aos";
-import 'aos/dist/aos.css';
+
 const Login = () => {
 
-  useEffect(() => {
-      Aos.init({
-          duration: 1000, 
-          once: true,
-          easing: 'ease-in-out',
-      });
-      }, []);
+
 
   const { dark } = useOutletContext();
   const [error, setError] = useState("");

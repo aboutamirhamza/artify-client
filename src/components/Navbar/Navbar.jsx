@@ -6,9 +6,13 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./Navbar.css";
 
 const Navbar = ({dark, toggleDark}) => {
+
+
+  
   
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logOut();
@@ -139,7 +143,7 @@ const Navbar = ({dark, toggleDark}) => {
                     data-tooltip-id="my-tooltip-1"
                     className="w-12 h-12 rounded-full object-cover"
                     src={
-                      user.photoURL ||
+                      user?.photoURL ||
                       "https://img.freepik.com/premium-vector/orange-envelope-with-t-mail-logo-it_1277826-407.jpg?semt=ais_hybrid&w=740&q=80"
                     }
                     alt={user.displayName}

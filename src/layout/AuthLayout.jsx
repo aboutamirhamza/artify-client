@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../components/Footer/Footer';
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 const AuthLayout = () => {
 
     const [dark, setDark] = useState(false);
@@ -17,6 +18,21 @@ const AuthLayout = () => {
           document.documentElement.classList.remove("dark");
         }
       }, []);
+
+      useEffect(() => {
+          Aos.init({
+            duration: 800,
+            once: true,
+            easing: "ease-in-out",
+          });
+        }, []);
+      
+        useEffect(() => {
+          const timeout = setTimeout(() => {
+            Aos.refresh();
+          }, 300);
+          return () => clearTimeout(timeout);
+        }, [dark]);
     
       const toggleDark = () => {
         const newTheme = !dark;

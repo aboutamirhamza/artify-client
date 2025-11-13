@@ -1,21 +1,12 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
 import { useOutletContext } from "react-router";
-import Aos from "aos";
-import "aos/dist/aos.css";
+
 const AddArtWork = () => {
 
-
-useEffect(() => {
-    Aos.init({
-      duration: 1000,
-      once: true,
-      easing: "ease-in-out",
-    });
-  }, []);
 
   const { dark } = useOutletContext();
   const { user } = useContext(AuthContext);
@@ -113,6 +104,8 @@ useEffect(() => {
         });
       });
   };
+
+  
 
   return (
     <div className={`${dark ? "bg-gray-800" : "bg-white"} max-w-5xl mx-auto my-40 p-8 rounded-2xl shadow-lg`} data-aos="fade-up">

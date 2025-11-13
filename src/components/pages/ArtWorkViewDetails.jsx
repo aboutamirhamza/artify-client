@@ -100,7 +100,7 @@ const ArtWorkViewDetails = () => {
               </h3>
               <img
                 className="w-40 h-40 rounded-full object-cover"
-                src={user?.photoURL}
+                src={user?.photoURL || "https://img.freepik.com/premium-vector/orange-envelope-with-t-mail-logo-it_1277826-407.jpg?semt=ais_hybrid&w=740&q=80"}
                 alt={user?.displayName}
               />
               <p className="text-base font-raleway">
