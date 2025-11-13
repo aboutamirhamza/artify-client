@@ -17,9 +17,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export default app;
-
-
-
-// http://localhost:5173/add-artwork
-// http://localhost:5173/my-gallery
-// http://localhost:5173/my-favorites

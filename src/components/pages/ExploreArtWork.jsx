@@ -89,7 +89,7 @@ const ExploreArtWork = () => {
   );
 
   return (
-    <div>
+    <div className="px-6">
       <div>
         <h2
           className={`${
