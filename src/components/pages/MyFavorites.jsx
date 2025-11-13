@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
-import { AuthContext } from "../../provider/AuthProvider";
-import { useOutletContext } from "react-router";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import { useContext, useEffect, useState } from "react";
+import { FaHeart } from "react-icons/fa";
+import { useOutletContext } from "react-router";
+import { AuthContext } from "../../provider/AuthProvider";
 const MyFavorites = () => {
   useEffect(() => {
     Aos.init({
@@ -19,7 +19,7 @@ const MyFavorites = () => {
 
   const fetchFavorites = () => {
     if (user?.email) {
-      fetch(`http://localhost:8000/user-favorites/${user.email}`)
+      fetch(`https://artify-server-nu.vercel.app/user-favorites/${user.email}`)
         .then((res) => res.json())
         .then((data) => setFavorites(data))
         .catch((err) => console.error(err));
@@ -31,7 +31,7 @@ const MyFavorites = () => {
   }, [user]);
 
   const removeFavorite = async (id) => {
-    await fetch(`http://localhost:8000/unfavorite/${id}`, {
+    await fetch(`https://artify-server-nu.vercel.app/unfavorite/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userEmail: user.email }),

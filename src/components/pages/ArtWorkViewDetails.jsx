@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
-import { AuthContext } from "../../provider/AuthProvider";
-import { Typewriter } from "react-simple-typewriter";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import { Typewriter } from "react-simple-typewriter";
+import { AuthContext } from "../../provider/AuthProvider";
 const ArtWorkViewDetails = () => {
   useEffect(() => {
     Aos.init({
@@ -20,14 +20,14 @@ const ArtWorkViewDetails = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/artworks-details/${id}`)
+    fetch(`https://artify-server-nu.vercel.app/artworks-details/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setArtwork(data);
         setLoading(false);
 
         if (data?.userEmail) {
-          fetch("http://localhost:8000/all-artworks")
+          fetch("https://artify-server-nu.vercel.app/all-artworks")
             .then((res) => res.json())
             .then((allData) => {
               const count = allData.filter(

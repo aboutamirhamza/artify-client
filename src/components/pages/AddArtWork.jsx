@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { useOutletContext } from "react-router";
 import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
-import { useOutletContext } from "react-router";
 
 const AddArtWork = () => {
 
@@ -32,7 +32,6 @@ const AddArtWork = () => {
       userName: form.name.value,
       userEmail: form.email.value,
     };
-    console.log(newArtwork);
 
     if (newArtwork.title.length < 5) {
       setTitleError("Title must be at least 5 characters long");
@@ -77,7 +76,7 @@ const AddArtWork = () => {
     }
 
     axios
-      .post("http://localhost:8000/artworks", newArtwork)
+      .post("https://artify-server-nu.vercel.app/artworks", newArtwork)
       .then((data) => {
         if (data.data.insertedId) {
           Swal.fire({

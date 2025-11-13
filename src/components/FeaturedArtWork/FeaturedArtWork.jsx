@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../provider/AuthProvider";
-import { Link } from "react-router";
-import Loading from "../Loading/Loading";
-import { Fade, Slide } from "react-awesome-reveal";
-import "aos/dist/aos.css";
 import Aos from "aos";
+import "aos/dist/aos.css";
+import { useContext, useEffect, useState } from "react";
+import { Slide } from "react-awesome-reveal";
+import { Link } from "react-router";
+import { AuthContext } from "../../provider/AuthProvider";
+import Loading from "../Loading/Loading";
 
 const FeaturedArtWork = ({ dark }) => {
   useEffect(() => {
@@ -19,7 +19,7 @@ const FeaturedArtWork = ({ dark }) => {
   const { loading, setLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("http://localhost:8000/home-artworks")
+    fetch("https://artify-server-nu.vercel.app/home-artworks")
       .then((res) => res.json())
       .then((data) => {
         setArtworks(data);

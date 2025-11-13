@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { AuthContext } from "../../provider/AuthProvider";
-import { useOutletContext } from "react-router";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import { useContext, useEffect, useState } from "react";
+import { useOutletContext } from "react-router";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../provider/AuthProvider";
 const MyGallery = () => {
 
 
@@ -15,7 +15,7 @@ const MyGallery = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:8000/my-artworks/${user.email}`)
+      fetch(`https://artify-server-nu.vercel.app/my-artworks/${user.email}`)
         .then((res) => res.json())
         .then((data) => setArtworks(data))
         .catch((err) => console.error(err));
@@ -32,7 +32,7 @@ const MyGallery = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:8000/artworks/${id}`, {
+        fetch(`https://artify-server-nu.vercel.app/artworks/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -50,7 +50,7 @@ const MyGallery = () => {
     const updatedData = { ...selected };
     delete updatedData._id;
 
-    const res = await fetch(`http://localhost:8000/artworks/${selected._id}`, {
+    const res = await fetch(`https://artify-server-nu.vercel.app/artworks/${selected._id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),

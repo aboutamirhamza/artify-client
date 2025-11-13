@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FaSearch, FaHeart, FaRegHeart } from "react-icons/fa";
-import { Link, useOutletContext } from "react-router";
-import { AuthContext } from "../../provider/AuthProvider";
-import Swal from "sweetalert2";
-import Loading from "../Loading/Loading";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import { useContext, useEffect, useState } from "react";
+import { FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
+import { Link, useOutletContext } from "react-router";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../provider/AuthProvider";
+import Loading from "../Loading/Loading";
 const ExploreArtWork = () => {
   useEffect(() => {
     Aos.init({
@@ -23,7 +23,7 @@ const ExploreArtWork = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:8000/user-favorites/${user.email}`)
+      fetch(`https://artify-server-nu.vercel.app/user-favorites/${user.email}`)
         .then((res) => res.json())
         .then((favs) => {
           const map = {};
@@ -41,8 +41,8 @@ const ExploreArtWork = () => {
 
     const isLiked = likedMap[artworkId];
     const url = isLiked
-      ? `http://localhost:8000/unfavorite/${artworkId}`
-      : `http://localhost:8000/favorite/${artworkId}`;
+      ? `https://artify-server-nu.vercel.app/unfavorite/${artworkId}`
+      : `https://artify-server-nu.vercel.app/favorite/${artworkId}`;
 
     try {
       const res = await fetch(url, {
@@ -69,7 +69,7 @@ const ExploreArtWork = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/all-artworks")
+    fetch("https://artify-server-nu.vercel.app/all-artworks")
       .then((res) => res.json())
       .then((data) => {
         setArtworks(data);
