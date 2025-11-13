@@ -1,16 +1,26 @@
-# React + Vite
+<h3>Project</h3><br><br>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h4>Project Name: Artify</h4><br><br>
+<h3>Technology Used</h3><br><br>
+<p>ReactJS</p><br>
+<p>TailwindCSS</p><br>
+<p>DaisyUI</p><br>
+<p>ReactRouter</p><br>
+<p>React Tostify</p><br>
+<p>React Icons</p><br>
+<p>React Spinner</p><br>
+<p>Framer Motion</p><br>
+<p>SweetAlert2</p><br>
+<p>SwiperJS</p><br>
+<p>React Tooltip</p><br>
+<p>Axios</p><br>
+<p>Simple typeWriter</p><br>
+<p>Awesome Reveal</p><br><br>
 
-Currently, two official plugins are available:
+<h3>User Authentication</h3><br>
+<p>FireBase</p><br>
+<p>Hosting: FireBase Hosting</p><br><br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<h3>BackEnd And DataBase</h3><br><br>
+<p>ExpressJS, Cors</p><br><br>
+<p>DataBase: MongoDB</p>
